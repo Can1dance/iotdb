@@ -20,7 +20,6 @@ package org.apache.iotdb.db.conf;
 
 import org.apache.iotdb.db.conf.directories.DirectoryManager;
 import org.apache.iotdb.db.engine.StorageEngine;
-import org.apache.iotdb.db.engine.compaction.CompactionStrategy;
 import org.apache.iotdb.db.exception.query.QueryProcessException;
 import org.apache.iotdb.tsfile.common.conf.TSFileDescriptor;
 import org.apache.iotdb.tsfile.file.metadata.enums.TSDataType;
@@ -184,21 +183,10 @@ public class IoTDBDescriptor {
               properties.getProperty(
                   "reject_proportion", Double.toString(conf.getRejectProportion()))));
 
-      conf.setStorageGroupSizeReportThreshold(
-          Long.parseLong(
-              properties.getProperty(
-                  "storage_group_report_threshold",
-                  Long.toString(conf.getStorageGroupSizeReportThreshold()))));
-
       conf.setMetaDataCacheEnable(
           Boolean.parseBoolean(
               properties.getProperty(
                   "meta_data_cache_enable", Boolean.toString(conf.isMetaDataCacheEnable()))));
-
-      conf.setEnableLastCache(
-          Boolean.parseBoolean(
-              properties.getProperty(
-                  "enable_last_cache", Boolean.toString(conf.isLastCacheEnabled()))));
 
       initMemoryAllocate(properties);
 
@@ -327,11 +315,6 @@ public class IoTDBDescriptor {
               properties.getProperty(
                   "merge_page_point_number",
                   Integer.toString(conf.getMergePagePointNumberThreshold()))));
-
-      conf.setCompactionStrategy(
-          CompactionStrategy.valueOf(
-              properties.getProperty(
-                  "compaction_strategy", conf.getCompactionStrategy().toString())));
 
       conf.setEnableUnseqCompaction(
           Boolean.parseBoolean(
@@ -839,9 +822,6 @@ public class IoTDBDescriptor {
     int walBufferSize =
         Integer.parseInt(
             properties.getProperty("wal_buffer_size", Integer.toString(conf.getWalBufferSize())));
-    if (walBufferSize > 0) {
-      conf.setWalBufferSize(walBufferSize);
-    }
 
     int maxWalBytebufferNumForEachPartition =
         Integer.parseInt(
@@ -1001,12 +981,7 @@ public class IoTDBDescriptor {
         .setValueEncoder(
             properties.getProperty(
                 "value_encoder", TSFileDescriptor.getInstance().getConfig().getValueEncoder()));
-    TSFileDescriptor.getInstance()
-        .getConfig()
-        .setCompressor(
-            properties.getProperty(
-                "compressor",
-                TSFileDescriptor.getInstance().getConfig().getCompressor().toString()));
+
     TSFileDescriptor.getInstance()
         .getConfig()
         .setMaxDegreeOfIndexNode(
@@ -1047,12 +1022,6 @@ public class IoTDBDescriptor {
       conf.setSeqMemtableFlushCheckInterval(seqMemTableFlushCheckInterval);
     }
 
-    conf.setEnableTimedFlushUnseqMemtable(
-        Boolean.parseBoolean(
-            properties.getProperty(
-                "enable_timed_flush_unseq_memtable",
-                Boolean.toString(conf.isEnableTimedFlushUnseqMemtable()))));
-
     long unseqMemTableFlushInterval =
         Long.parseLong(
             properties
@@ -1074,11 +1043,6 @@ public class IoTDBDescriptor {
     if (unseqMemTableFlushCheckInterval > 0) {
       conf.setUnseqMemtableFlushCheckInterval(unseqMemTableFlushCheckInterval);
     }
-
-    conf.setEnableTimedCloseTsFile(
-        Boolean.parseBoolean(
-            properties.getProperty(
-                "enable_timed_close_tsfile", Boolean.toString(conf.isEnableTimedCloseTsFile()))));
 
     long closeTsFileIntervalAfterFlushing =
         Long.parseLong(

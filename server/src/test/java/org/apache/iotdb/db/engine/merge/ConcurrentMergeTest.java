@@ -23,7 +23,6 @@ import org.apache.iotdb.db.conf.IoTDBConfig;
 import org.apache.iotdb.db.conf.IoTDBDescriptor;
 import org.apache.iotdb.db.constant.TestConstant;
 import org.apache.iotdb.db.engine.MetadataManagerHelper;
-import org.apache.iotdb.db.engine.compaction.CompactionStrategy;
 import org.apache.iotdb.db.engine.flush.TsFileFlushPolicy;
 import org.apache.iotdb.db.engine.merge.manage.MergeManager;
 import org.apache.iotdb.db.engine.querycontext.QueryDataSource;
@@ -51,7 +50,6 @@ import java.util.Collections;
 public class ConcurrentMergeTest {
   private static final IoTDBConfig config = IoTDBDescriptor.getInstance().getConfig();
   private static Logger logger = LoggerFactory.getLogger(StorageGroupProcessorTest.class);
-
   private String storageGroup = "root.vehicle.d0";
   private String systemDir = TestConstant.OUTPUT_DATA_DIR.concat("info");
   private String deviceId = "root.vehicle.d0";
@@ -61,7 +59,7 @@ public class ConcurrentMergeTest {
 
   @Before
   public void setUp() throws Exception {
-    config.setCompactionStrategy(CompactionStrategy.LEVEL_COMPACTION);
+
     MetadataManagerHelper.initMetadata();
     EnvironmentUtils.envSetUp();
     processor = new ConcurrentMergeTest.DummySGP(systemDir, storageGroup);
@@ -75,7 +73,6 @@ public class ConcurrentMergeTest {
     EnvironmentUtils.cleanDir(TestConstant.OUTPUT_DATA_DIR);
     MergeManager.getINSTANCE().stop();
     EnvironmentUtils.cleanEnv();
-    config.setCompactionStrategy(CompactionStrategy.LEVEL_COMPACTION);
   }
 
   @Test

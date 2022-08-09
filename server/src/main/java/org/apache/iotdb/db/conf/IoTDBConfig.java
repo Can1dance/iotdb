@@ -132,7 +132,7 @@ public class IoTDBConfig {
   private double rejectProportion = 0.8;
 
   /** If storage group increased more than this threshold, report to system. */
-  private long storageGroupSizeReportThreshold = 16 * 1024 * 1024L;
+  private long storageGroupSizeReportThreshold = (long) 0.5 * 1024 * 1024L;
 
   /** When inserting rejected, waiting period to check system again */
   private int checkPeriodWhenInsertBlocked = 50;
@@ -166,7 +166,7 @@ public class IoTDBConfig {
    * WAL is enabled and the size of the inserted plan is greater than one-half of this parameter,
    * then the insert plan will be rejected by WAL.
    */
-  private int walBufferSize = 16 * 1024 * 1024;
+  private int walBufferSize = 1 * 1024 * 1024;
 
   private int maxWalBytebufferNumForEachPartition = 6;
 
@@ -306,7 +306,7 @@ public class IoTDBConfig {
   private long seqMemtableFlushCheckInterval = 10 * 60 * 1000L;
 
   /** Whether to timed flush unsequence tsfiles' memtables. */
-  private boolean enableTimedFlushUnseqMemtable = true;
+  private boolean enableTimedFlushUnseqMemtable = false;
 
   /**
    * If a memTable's created time is older than current time minus this, the memtable will be
@@ -318,7 +318,7 @@ public class IoTDBConfig {
   private long unseqMemtableFlushCheckInterval = 10 * 60 * 1000L;
 
   /** Whether to timed close tsfiles. */
-  private boolean enableTimedCloseTsFile = true;
+  private boolean enableTimedCloseTsFile = false;
 
   /**
    * If a TsfileProcessor's last working memtable flush time is older than current time minus this
@@ -347,7 +347,7 @@ public class IoTDBConfig {
   private int mergePagePointNumberThreshold = 100;
 
   /** LEVEL_COMPACTION, NO_COMPACTION */
-  private CompactionStrategy compactionStrategy = CompactionStrategy.LEVEL_COMPACTION;
+  private CompactionStrategy compactionStrategy = CompactionStrategy.NO_COMPACTION;
 
   /**
    * Works when the compaction_strategy is LEVEL_COMPACTION. Whether to merge unseq files into seq
@@ -399,7 +399,7 @@ public class IoTDBConfig {
   private long allocateMemoryForChunkCache = allocateMemoryForRead / 10;
 
   /** Whether to enable Last cache */
-  private boolean lastCacheEnable = true;
+  private boolean lastCacheEnable = false;
 
   /** Set true to enable statistics monitor service, false to disable statistics service. */
   private boolean enableStatMonitor = false;
@@ -1263,10 +1263,6 @@ public class IoTDBConfig {
     return walBufferSize;
   }
 
-  public void setWalBufferSize(int walBufferSize) {
-    this.walBufferSize = walBufferSize;
-  }
-
   public int getMaxWalBytebufferNumForEachPartition() {
     return maxWalBytebufferNumForEachPartition;
   }
@@ -1365,10 +1361,6 @@ public class IoTDBConfig {
 
   public long getStorageGroupSizeReportThreshold() {
     return storageGroupSizeReportThreshold;
-  }
-
-  public void setStorageGroupSizeReportThreshold(long storageGroupSizeReportThreshold) {
-    this.storageGroupSizeReportThreshold = storageGroupSizeReportThreshold;
   }
 
   public long getAllocateMemoryForWrite() {
@@ -1531,10 +1523,6 @@ public class IoTDBConfig {
     return enableTimedFlushUnseqMemtable;
   }
 
-  public void setEnableTimedFlushUnseqMemtable(boolean enableTimedFlushUnseqMemtable) {
-    this.enableTimedFlushUnseqMemtable = enableTimedFlushUnseqMemtable;
-  }
-
   public long getUnseqMemtableFlushInterval() {
     return unseqMemtableFlushInterval;
   }
@@ -1553,10 +1541,6 @@ public class IoTDBConfig {
 
   public boolean isEnableTimedCloseTsFile() {
     return enableTimedCloseTsFile;
-  }
-
-  public void setEnableTimedCloseTsFile(boolean enableTimedCloseTsFile) {
-    this.enableTimedCloseTsFile = enableTimedCloseTsFile;
   }
 
   public long getCloseTsFileIntervalAfterFlushing() {
@@ -1609,10 +1593,6 @@ public class IoTDBConfig {
 
   public CompactionStrategy getCompactionStrategy() {
     return compactionStrategy;
-  }
-
-  public void setCompactionStrategy(CompactionStrategy compactionStrategy) {
-    this.compactionStrategy = compactionStrategy;
   }
 
   public boolean isEnableUnseqCompaction() {
@@ -1723,10 +1703,6 @@ public class IoTDBConfig {
 
   public boolean isLastCacheEnabled() {
     return lastCacheEnable;
-  }
-
-  public void setEnableLastCache(boolean lastCacheEnable) {
-    this.lastCacheEnable = lastCacheEnable;
   }
 
   public boolean isEnableWatermark() {

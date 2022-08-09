@@ -21,7 +21,6 @@ package org.apache.iotdb.db.integration;
 import org.apache.iotdb.db.conf.IoTDBConstant;
 import org.apache.iotdb.db.conf.IoTDBDescriptor;
 import org.apache.iotdb.db.engine.StorageEngine;
-import org.apache.iotdb.db.engine.compaction.CompactionStrategy;
 import org.apache.iotdb.db.engine.storagegroup.virtualSg.HashVirtualPartitioner;
 import org.apache.iotdb.db.exception.metadata.IllegalPathException;
 import org.apache.iotdb.db.metadata.PartialPath;
@@ -47,9 +46,7 @@ import static org.junit.Assert.assertNotNull;
 public class IoTDBLoadExternalTsfileWithVirtualSGIT extends IoTDBLoadExternalTsfileIT {
   @Before
   public void setUp() throws Exception {
-    IoTDBDescriptor.getInstance()
-        .getConfig()
-        .setCompactionStrategy(CompactionStrategy.NO_COMPACTION);
+    IoTDBDescriptor.getInstance().getConfig();
     virtualPartitionNum = IoTDBDescriptor.getInstance().getConfig().getVirtualStorageGroupNum();
     IoTDBDescriptor.getInstance().getConfig().setVirtualStorageGroupNum(2);
     HashVirtualPartitioner.getInstance().setStorageGroupNum(2);

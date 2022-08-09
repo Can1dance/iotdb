@@ -299,9 +299,9 @@
                 </property>
             </activation>
             <properties>
-                <iotdb.test.skip>false</iotdb.test.skip>
-                <iotdb.ut.skip>false</iotdb.ut.skip>
-                <iotdb.it.skip>false</iotdb.it.skip>
+                <iotdb.test.skip>true</iotdb.test.skip>
+                <iotdb.ut.skip>true</iotdb.ut.skip>
+                <iotdb.it.skip>true</iotdb.it.skip>
             </properties>
         </profile>
     </profiles>
